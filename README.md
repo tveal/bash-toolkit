@@ -34,9 +34,9 @@ aws_secret_access_key = <key for example1>
 mfa_serial = <mfa arn for example1>
 
 [example2]
-aws_access_key_id = <key id for example1>
-aws_secret_access_key = <key for example1>
-mfa_serial = <mfa arn for example1>
+aws_access_key_id = <key id for example2>
+aws_secret_access_key = <key for example2>
+mfa_serial = <mfa arn for example2>
 ```
 You **should not** have a `[default]` credential setup initially, as the mfa tool will override it with the live session. You do not need 2 credential sets such as example1 and example2 - this is just a sample for if you had more than 1. After running the mfa tool, this credentials file will have `[default]` properties, but keep in mind those properties will change next time you initialize with an mfa token. Ideally, the session creds should only be stored in the shell environment variables, but not all libraries and tools used with aws properly access the environment variables.
 
@@ -54,7 +54,7 @@ Now add `mySubMenu` to the `mainMenu` so you have a way to load your new menu:
 ```
 addMenuItem "mainMenu" "Go to My Sub Menu" loadMenu "mySubMenu"
 ```
-Don't forget to define your new functions in `mySubMenu`:
+Don't forget to define your new functions for `mySubMenu`:
 ```
 function fancyToolFunc() {
     echo "TODO: do something fawncy here."
