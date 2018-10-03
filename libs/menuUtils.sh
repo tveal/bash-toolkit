@@ -1,3 +1,20 @@
+function setOriginalIFS() {
+    if [[ -z "${OIFS+x}" ]]; then
+        export DEFAULT_IFS=$' \t\n'
+        if [[ "$IFS" = "|" ]]; then
+            # if a menu function halted prematurely,
+            # use bash default IFS
+            OIFS="$DEFAULT_IFS";
+        else
+            OIFS="$IFS";
+        fi
+    fi
+}
+
+function resetIFS() {
+    IFS="$OIFS";
+}
+
 # create menu by name
 #   $1 = "menuName" (cannot have spaces)
 #   $2 = "Menu Title"
@@ -45,6 +62,7 @@ function loadMenu() {
         
         # Change IFS (Internal Field Separator) to pipe so arrays can be be processed properly
         # http://timmurphy.org/2012/03/09/convert-a-delimited-string-into-an-array-in-bash/
+        setOriginalIFS
         IFS='|';
         local itmArray=($itmVal)
         local cmdArray=($cmdVal)
@@ -69,9 +87,7 @@ function loadMenu() {
             pause
         fi
         
-        # Restore IFS to it's original state
-        # OIFS is set at highest scope in these scripts so that iterations don't override it
-        IFS="$OIFS";
+        resetIFS
     else
         echo "Oops! The menu ($menuName) does not exist :("
         echo "Please check your config for this menu"

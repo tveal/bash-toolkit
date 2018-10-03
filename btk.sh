@@ -2,7 +2,6 @@
 thisFilePath="$( dirname "${BASH_SOURCE[0]}" )"
 source "$thisFilePath/libs/pathUtils.sh"
 srcLibFile "menuUtils.sh"
-# srcLibFile "sshUtils.sh"
 srcConfigFile "menus.sh"
 
 TRUE=0
@@ -10,13 +9,9 @@ FALSE=1
 NIL='nil'
 
 ORIG_DIR="$(pwd)"
-SCRIPT_DIR="$( getActiveScriptDir )"
+SCRIPT_DIR="$(getActiveScriptDir)"
 BASHRC=~/.bashrc
-export OIFS="$IFS";
 
-# help set
-#   -e  Exit immediately if a command exits with a non-zero status.
-set -e
 function main() {
     keepGoing=$TRUE
     cd "$SCRIPT_DIR"
@@ -30,7 +25,6 @@ function main() {
     resetBashFunctions
     clear
 }
-set +e
 
 function keepGoing() {
     return $keepGoing;
@@ -55,4 +49,3 @@ function resetBashFunctions() {
 }
 
 main "$@"
-IFS="$OIFS";

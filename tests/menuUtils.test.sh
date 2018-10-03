@@ -16,6 +16,44 @@ function tests() {
     function pause() {
         echo "-- overriden pause function --"
     }
+
+    describe "IFS Tests"
+
+    TESTNAME "IFS should be bash default"
+    actual="$IFS"
+    actualEquals $' \t\n'
+    
+    TESTNAME "setOriginalIFS should set to bash default when IFS is pipe '|'"
+    IFS='|'; unset OIFS;
+    setOriginalIFS
+    IFS=$' \t\n'; actual="$OIFS"
+    actualEquals $' \t\n'
+    actual="$DEFAULT_IFS"
+    actualEquals $' \t\n'
+    
+    TESTNAME "setOriginalIFS should set to IFS when not a pipe '|'"
+    IFS=';'; unset OIFS;
+    setOriginalIFS
+    IFS=$' \t\n'; actual="$OIFS"
+    actualEquals ';'
+    
+    TESTNAME "setOriginalIFS should keep existing OIFS when IFS is not a pipe '|'"
+    IFS=';'; OIFS='blah';
+    setOriginalIFS
+    IFS=$' \t\n'; actual="$OIFS"
+    actualEquals 'blah'; unset OIFS
+    
+    TESTNAME "resetIFS should set IFS '|' to OIFS ';'"
+    OIFS=';'; IFS='|'
+    resetIFS
+    actual="$IFS"; IFS=$' \t\n'
+    actualEquals ';'
+    
+    TESTNAME "resetIFS should set IFS '|' to OIFS bash default"
+    OIFS=$' \t\n'; IFS='|'
+    resetIFS
+    actual="$IFS"
+    actualEquals $' \t\n'
     
     describe "Pointer Tests"
     

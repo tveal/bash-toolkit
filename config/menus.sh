@@ -6,25 +6,25 @@ addMenuItem "mainMenu" "Quit" l8r
 addMenuItem "mainMenu" "Show Current AWS Env Vars" showEnv
 addMenuItem "mainMenu" "AWS MFA" setAwsMfa
 addMenuItem "mainMenu" "Clear AWS Env Vars" clearAws
-addMenuItem "mainMenu" "Manual Env Var Menu" loadMenu "manualMenu"
+addMenuItem "mainMenu" "Manual Env Var Menu" loadMenu "awsEnvVarMenu"
 
 # https://stackoverflow.com/questions/23929235/multi-line-string-with-extra-space-preserved-indentation
-read -r -d '' MANUAL_MENU << EOM
+read -r -d '' ENV_VAR_MENU << EOM
   Manual Env Var Management
   - https://docs.aws.amazon.com/cli/latest/userguide/cli-environment.html
 EOM
-createMenu "manualMenu" "$MANUAL_MENU"
-addMenuItem "manualMenu" "Quit" l8r
-addMenuItem "manualMenu" "Show Current AWS Env Vars" showEnv
-addMenuItem "manualMenu" "AWS_ACCESS_KEY_ID" exportVar "AWS_ACCESS_KEY_ID"
-addMenuItem "manualMenu" "AWS_SECRET_ACCESS_KEY" exportVar "AWS_SECRET_ACCESS_KEY"
-addMenuItem "manualMenu" "AWS_SESSION_TOKEN" exportVar "AWS_SESSION_TOKEN"
-addMenuItem "manualMenu" "AWS_DEFAULT_REGION" exportVar "AWS_DEFAULT_REGION"
-addMenuItem "manualMenu" "AWS_DEFAULT_OUTPUT" exportVar "AWS_DEFAULT_OUTPUT"
-addMenuItem "manualMenu" "AWS_PROFILE" exportVar "AWS_PROFILE"
-addMenuItem "manualMenu" "AWS_CA_BUNDLE" exportVar "AWS_CA_BUNDLE"
-addMenuItem "manualMenu" "AWS_SHARED_CREDENTIALS_FILE" exportVar "AWS_SHARED_CREDENTIALS_FILE"
-addMenuItem "manualMenu" "AWS_CONFIG_FILE" exportVar "AWS_CONFIG_FILE"
+createMenu "awsEnvVarMenu" "$ENV_VAR_MENU"
+addMenuItem "awsEnvVarMenu" "Quit" l8r
+addMenuItem "awsEnvVarMenu" "Show Current AWS Env Vars" showEnv
+addMenuItem "awsEnvVarMenu" "AWS_ACCESS_KEY_ID" exportVar "AWS_ACCESS_KEY_ID"
+addMenuItem "awsEnvVarMenu" "AWS_SECRET_ACCESS_KEY" exportVar "AWS_SECRET_ACCESS_KEY"
+addMenuItem "awsEnvVarMenu" "AWS_SESSION_TOKEN" exportVar "AWS_SESSION_TOKEN"
+addMenuItem "awsEnvVarMenu" "AWS_DEFAULT_REGION" exportVar "AWS_DEFAULT_REGION"
+addMenuItem "awsEnvVarMenu" "AWS_DEFAULT_OUTPUT" exportVar "AWS_DEFAULT_OUTPUT"
+addMenuItem "awsEnvVarMenu" "AWS_PROFILE" exportVar "AWS_PROFILE"
+addMenuItem "awsEnvVarMenu" "AWS_CA_BUNDLE" exportVar "AWS_CA_BUNDLE"
+addMenuItem "awsEnvVarMenu" "AWS_SHARED_CREDENTIALS_FILE" exportVar "AWS_SHARED_CREDENTIALS_FILE"
+addMenuItem "awsEnvVarMenu" "AWS_CONFIG_FILE" exportVar "AWS_CONFIG_FILE"
 
 function showEnv() {
     printf "env | grep 'AWS_'\n\n"
@@ -35,8 +35,8 @@ function showEnv() {
 }
 
 function setProfile() {
-    echo "grep '\[.*\]' ~/.aws/config ~/.aws/credentials"
-    grep '\[.*\]' ~/.aws/config ~/.aws/credentials
+    echo "grep '\[.*\]' ~/.aws/credentials"
+    grep '\[.*\]' ~/.aws/credentials
     echo "Enter the profile name you want to use, without the brackets []"
     echo
     echo "  This should NOT be default, rather another cred config for initial creds"
@@ -83,6 +83,7 @@ function setAwsMfa() {
 }
 
 function clearAws() {
+    unset AWS_INIT_CREDS
     unset AWS_PROFILE
     unset AWS_ACCESS_KEY_ID
     unset AWS_SECRET_ACCESS_KEY
