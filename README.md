@@ -31,9 +31,21 @@ For cleaner, expandable, and maintainable bash profile config, use [bash profile
 
 This toolkit includes some aws session tools, allowing you to easily check aws environment variables and establish a session with an mfa code.
 
-Dependencies
-- [jq](https://stedolan.github.io/jq/) - Command-ling JSON Parser
+### Dependencies
+- jq - Command-ling JSON Parser
 - `~/.aws/credentials` config
+
+#### jq
+
+For Ubuntu-based distributions, install jq with:
+
+```bash
+sudo apt install jq
+```
+
+For other platforms, download from [jq's website](https://stedolan.github.io/jq/).
+
+#### Credentials
 
 The mfa tool uses _non-default_ aws credentials to spawn a live session, storing session credentials in the _default_ profile. For example, your credentials file should look like this:
 
