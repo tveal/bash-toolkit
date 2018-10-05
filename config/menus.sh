@@ -48,12 +48,13 @@ function setProfile() {
 # Depends on jq (Command-line JSON Parser)
 # https://stedolan.github.io/jq/
 function setAwsMfa() {
+    unset AWS_INIT_CREDS
     unset AWS_ACCESS_KEY_ID
     unset AWS_SECRET_ACCESS_KEY
     unset AWS_SESSION_TOKEN
 
     while [[ -z "$AWS_INIT_CREDS"
-        || "$AWS_INIT_CREDS" = "default" 
+        || "$AWS_INIT_CREDS" = "default"
         || "$AWS_INIT_CREDS" = *"["* 
         || "$AWS_INIT_CREDS" = *"]"* ]]; do
         setProfile
