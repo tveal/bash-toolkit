@@ -52,7 +52,10 @@ function setAwsMfa() {
     unset AWS_SECRET_ACCESS_KEY
     unset AWS_SESSION_TOKEN
 
-    while [[ -z "$AWS_INIT_CREDS" || "$AWS_INIT_CREDS" = "default" ]]; do
+    while [[ -z "$AWS_INIT_CREDS"
+        || "$AWS_INIT_CREDS" = "default" 
+        || "$AWS_INIT_CREDS" = *"["* 
+        || "$AWS_INIT_CREDS" = *"]"* ]]; do
         setProfile
     done
 
@@ -83,17 +86,12 @@ function setAwsMfa() {
 }
 
 function clearAws() {
-    unset AWS_INIT_CREDS
-
-    unset AWS_ACCESS_KEY_ID
-    unset AWS_SECRET_ACCESS_KEY
-    unset AWS_SESSION_TOKEN
-    unset AWS_DEFAULT_REGION
-    unset AWS_DEFAULT_OUTPUT
-    unset AWS_PROFILE
-    unset AWS_CA_BUNDLE
-    unset AWS_SHARED_CREDENTIALS_FILE
-    unset AWS_CONFIG_FILE
+    for line in $(env |grep '^AWS_.*' |cut -d'=' -f1); do
+        if [[ "$line" = "AWS_"* ]]; then
+            echo "Unsetting $line"
+            eval "unset $line"
+        fi
+    done
 }
 
 function exportVar() {

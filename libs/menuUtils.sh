@@ -81,7 +81,11 @@ function loadMenu() {
         # Execute selected option
         clearTerm
         if $( isValidMenuOption "$selectedOption" "${#cmdArray[@]}" ); then
-            eval "${cmdArray[$selectedOption]}"
+            local cmdString="${cmdArray[$selectedOption]}"
+            # ensure option is executed with normal IFS
+            resetIFS
+            eval "$cmdString"
+            IFS='|';
         else
             echo "Invalid option selected"
             pause
